@@ -5,8 +5,11 @@ import { catchError } from 'rxjs/operators';
 
 import { ClienteGuardar, ClienteLeer } from './cliente';
 
-import { environment } from 'src/environments/environment';
 import { throwError } from 'rxjs';
+
+import { CustomError } from '../utils/custom.error';
+
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -30,14 +33,20 @@ export class ClienteService {
   crearCliente(cliente: ClienteGuardar) {
     return this.http.post<ClienteLeer>(this.url, cliente, { headers: this.headers })
       .pipe(
-        catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
+        catchError((e: HttpErrorResponse) => {
+          const err: { datos_erroneos: string[], mensaje: string } = e.error;
+          return throwError(() => new CustomError(err.mensaje, err.datos_erroneos));
+        })
       );
   }
 
   actualizarCliente(id: number, cliente: ClienteGuardar) {
     return this.http.put<ClienteLeer>(`${this.url}/${id}`, cliente, { headers: this.headers })
       .pipe(
-        catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
+        catchError((e: HttpErrorResponse) => {
+          const err: { datos_erroneos: string[], mensaje: string } = e.error;
+          return throwError(() => new CustomError(err.mensaje, err.datos_erroneos));
+        })
       );
   }
 

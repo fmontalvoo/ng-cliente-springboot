@@ -55,7 +55,7 @@ export class FormComponent implements OnInit {
             location.href = '/';
             // formulario.resetForm();
           },
-          error: e => alert(e),
+          error: e => alert(`${e.message}\n\n${e.stack}`),
           complete: () => console.log('Completado')
         });
     } else {
@@ -66,7 +66,7 @@ export class FormComponent implements OnInit {
             location.href = '/';
             // formulario.resetForm();
           },
-          error: e => alert(e),
+          error: e => alert(`${e.message}\n\n${e.stack}`),
           complete: () => console.log('Completado')
         });
     }
