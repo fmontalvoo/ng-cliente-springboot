@@ -4,23 +4,33 @@
     <div class="form-floating mb-3">
       <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre"
         [(ngModel)]="cliente.nombre" [class.is-valid]="nombre.valid"
-        [class.alert-danger]="nombre.invalid && nombre.touched" #nombre="ngModel" required />
+        [class.alert-danger]="nombre.invalid && nombre.touched" #nombre="ngModel" minlength="3" required />
       <label for="nombre">Nombre</label>
-      <small *ngIf="nombre.invalid && nombre.touched" class="text-danger">*El nombre es obligatorio</small>
+      <small *ngIf="nombre.touched && nombre.getError('required')" class="text-danger">*El nombre es
+        obligatorio</small>
+      <small *ngIf="nombre.touched && nombre.getError('minlength')" class="text-danger">*El nombre debe tener al menos 3
+        caracteres</small>
     </div>
     <div class="form-floating mb-3">
       <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido"
         [(ngModel)]="cliente.apellido" [class.is-valid]="apellido.valid"
-        [class.alert-danger]="apellido.invalid && apellido.touched" #apellido="ngModel" required />
+        [class.alert-danger]="apellido.invalid && apellido.touched" #apellido="ngModel" minlength="3" required />
       <label for="apellido">Apellido</label>
-      <small *ngIf="apellido.invalid && apellido.touched" class="text-danger">*El apellido es obligatorio</small>
+      <small *ngIf="apellido.touched && apellido.getError('required')" class="text-danger">*El apellido es
+        obligatorio</small>
+      <small *ngIf="apellido.touched && apellido.getError('minlength')" class="text-danger">*El apellido debe tener al
+        menos 3
+        caracteres</small>
     </div>
     <div class="form-floating mb-3">
       <input type="email" class="form-control" id="email" name="email" placeholder="Email" [(ngModel)]="cliente.email"
-        [class.is-valid]="email.valid" [class.alert-danger]="email.invalid && email.touched" #email="ngModel"
+        [class.is-valid]="email.valid" [class.alert-danger]="email.invalid && email.touched" #email="ngModel" email
         required />
       <label for="email">Email</label>
-      <small *ngIf="email.invalid && email.touched" class="text-danger">*El email es obligatorio</small>
+      <small *ngIf="email.touched && email.getError('required')" class="text-danger">*El email es
+        obligatorio</small>
+      <small *ngIf="email.touched && email.getError('email')" class="text-danger">*El email debe tener un formato
+        valido</small>
     </div>
     <div class="text-center col-12 mt-3">
       <button class="btn btn-lg btn-primary" type="submit">Guardar</button>
