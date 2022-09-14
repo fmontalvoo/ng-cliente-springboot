@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-import { Cliente, ClienteGuardar, ClienteLeer } from './cliente';
+import { catchError } from 'rxjs/operators';
+
+import { ClienteGuardar, ClienteLeer } from './cliente';
 
 import { environment } from 'src/environments/environment';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,23 +21,38 @@ export class ClienteService {
   constructor(private http: HttpClient) { }
 
   obtenerClientes() {
-    return this.http.get<ClienteLeer[]>(this.url);
+    return this.http.get<ClienteLeer[]>(this.url)
+      .pipe(
+        catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
+      );
   }
 
   crearCliente(cliente: ClienteGuardar) {
-    return this.http.post<ClienteLeer>(this.url, cliente, { headers: this.headers });
+    return this.http.post<ClienteLeer>(this.url, cliente, { headers: this.headers })
+      .pipe(
+        catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
+      );
   }
 
   actualizarCliente(id: number, cliente: ClienteGuardar) {
-    return this.http.put<ClienteLeer>(`${this.url}/${id}`, cliente, { headers: this.headers });
+    return this.http.put<ClienteLeer>(`${this.url}/${id}`, cliente, { headers: this.headers })
+      .pipe(
+        catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
+      );
   }
 
   obtenerClientePorId(id: number) {
-    return this.http.get<ClienteLeer>(`${this.url}/${id}`);
+    return this.http.get<ClienteLeer>(`${this.url}/${id}`)
+      .pipe(
+        catchError((e: HttpErrorResponse) =>
+          throwError(() => new Error(e.error.mensaje))
+        ));
   }
 
   eliminarCliente(id: number) {
-    return this.http.delete<void>(`${this.url}/${id}`);
+    return this.http.delete<void>(`${this.url}/${id}`).pipe(
+      catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
+    );
   }
 
 }

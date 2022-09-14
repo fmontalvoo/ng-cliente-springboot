@@ -22,15 +22,23 @@ export class ClientesComponent implements OnInit {
 
   obtenerClientes() {
     this.cs.obtenerClientes()
-      .subscribe(clientes => this.clientes = clientes);
+      .subscribe({
+        next: clientes => this.clientes = clientes,
+        error: e => alert(e),
+        complete: () => console.log('Completado')
+      });
   }
 
   eliminar(cliente: Cliente) {
     if (confirm(`¿Esta seguro de eliminar a : ${cliente.nombre} ${cliente.apellido}}?`)) {
       this.cs.eliminarCliente(cliente.id)
-        .subscribe(() => {
-          alert(`El cliente: ${cliente.nombre} ${cliente.apellido} fue eliminado.`);
-          this.obtenerClientes();
+        .subscribe({
+          next: () => {
+            alert(`El cliente: ${cliente.nombre} ${cliente.apellido} fue eliminado.`);
+            this.obtenerClientes();
+          },
+          error: e => alert(e),
+          complete: () => console.log('Completado')
         });
     }
 

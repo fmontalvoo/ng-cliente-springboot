@@ -31,7 +31,11 @@ export class FormComponent implements OnInit {
     this.id = Number(this.route.snapshot.paramMap.get('id') ?? '-1');
     if (this.id != -1) {
       this.cs.obtenerClientePorId(this.id)
-        .subscribe(cli => this.cliente = cli);
+        .subscribe({
+          next: cli => this.cliente = cli,
+          error: e => alert(e),
+          complete: () => console.log('Completado')
+        });
     }
   }
 
@@ -45,17 +49,25 @@ export class FormComponent implements OnInit {
 
     if (this.id != -1) {
       this.cs.actualizarCliente(this.id!, this.cliente)
-        .subscribe(cli => {
-          alert(`El cliente: ${cli.nombre} ${cli.apellido} se edito correctamente`);
-          location.href = '/';
-          // formulario.resetForm();
+        .subscribe({
+          next: cli => {
+            alert(`El cliente: ${cli.nombre} ${cli.apellido} se edito correctamente`);
+            location.href = '/';
+            // formulario.resetForm();
+          },
+          error: e => alert(e),
+          complete: () => console.log('Completado')
         });
     } else {
       this.cs.crearCliente(this.cliente)
-        .subscribe(cli => {
-          alert(`El cliente: ${cli.nombre} ${cli.apellido} se creo correctamente`);
-          location.href = '/';
-          // formulario.resetForm();
+        .subscribe({
+          next: cli => {
+            alert(`El cliente: ${cli.nombre} ${cli.apellido} se creo correctamente`);
+            location.href = '/';
+            // formulario.resetForm();
+          },
+          error: e => alert(e),
+          complete: () => console.log('Completado')
         });
     }
   }
