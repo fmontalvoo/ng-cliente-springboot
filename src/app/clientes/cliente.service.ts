@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
-import { ClienteGuardar, ClienteLeer } from './cliente';
+import { Cliente, ClienteGuardar, ClienteLeer } from './cliente';
 
 import { throwError } from 'rxjs';
 
@@ -26,6 +27,10 @@ export class ClienteService {
   obtenerClientes() {
     return this.http.get<ClienteLeer[]>(this.url)
       .pipe(
+        map(clientes => {
+          return clientes.map(cliente =>
+            ({ ...cliente, createdAt: formatDate(cliente.createdAt, 'dd/MM/yyyy', 'en_US') }));
+        }),
         catchError((e: HttpErrorResponse) => throwError(() => new Error(e.error.mensaje)))
       );
   }

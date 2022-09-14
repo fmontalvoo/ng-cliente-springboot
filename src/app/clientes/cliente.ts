@@ -3,7 +3,7 @@ export interface Cliente {
   nombre: string;
   apellido: string;
   email: string;
-  createdAt: Date;
+  createdAt: Date | string;
 }
 
 export type ClienteGuardar = Omit<Cliente, 'id' | 'createdAt'>;
