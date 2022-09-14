@@ -1,20 +1,28 @@
-<table class="table table-bordered table-striped mt-3">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Apellido</th>
-      <th>Email</th>
-      <!-- <th>Fecha</th> -->
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let cliente of clientes">
-      <td>{{cliente.id}}</td>
-      <td>{{cliente.nombre}}</td>
-      <td>{{cliente.apellido}}</td>
-      <td>{{cliente.email}}</td>
-      <!-- <td>{{cliente.createdAt}}</td> -->
-    </tr>
-  </tbody>
-</table>
+<div class="my-5">
+  <a class="btn btn-success mx-1" routerLink="/crear">Crear</a>
+  <table *ngIf="clientes.length > 0" class="table table-bordered table-striped mt-2 mb-5">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Email</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cliente of clientes">
+        <td>{{cliente.id}}</td>
+        <td>{{cliente.nombre}}</td>
+        <td>{{cliente.apellido}}</td>
+        <td>{{cliente.email}}</td>
+        <td>{{cliente.createdAt}}</td>
+        <td>
+          <a class="btn btn-primary mx-1" [routerLink]="['/editar', cliente.id]">Editar</a>
+          <button class="btn btn-danger mx-1" (click)="eliminar(cliente)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
